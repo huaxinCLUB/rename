@@ -3,7 +3,7 @@ from PySide2.QtUiTools import QUiLoader
 
 from PySide2.QtGui import QIcon
 import os
-
+import cn2an
 
 
 
@@ -38,15 +38,19 @@ class Rename:
 		self.ui.file_path.setText(filePath)
 		#将音频文件名放到files列表里
 		files = os.listdir(filePath)
-		#print(files)
-		#sorted(files,key= rule)
-		files.sort()
-		#print(files)
+		num_files = []
+		for j in files:
+			num_files.append(cn2an.transform(j))
+		file_dic = dict(zip(num_files,files))
+		# print(files)
+		new_files = []
+		for k in sorted(file_dic):
+			new_files.append(file_dic[k])
 		#设置表格列数（根据文件个数）
-		self.ui.tableWidget.setRowCount(len(files))
+		self.ui.tableWidget.setRowCount(len(new_files))
 		#将文件名填入表格第一列
 		row = 0
-		for i in files:
+		for i in new_files:
 			self.ui.tableWidget.setItem(row, 0, QTableWidgetItem(i))
 			row += 1
 		
